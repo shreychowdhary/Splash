@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Splash</title>
+</head>
+<body ng-app="splash">
+    <div class="list" ng-controller="adminCtrl">
+        <admin></admin>
+        <form ng-submit="register()">
+            <input ng-model="email"/>@lawrenceville.org
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+    <script src="/scripts/app.js"></script>
+    <script src="/scripts/controllers/adminCtrl.js"></script>
+    <script src="/scripts/services/adminData.js"></script>
+    <script src="/scripts/directives/admin.js"></script>
+</body>
+</html>

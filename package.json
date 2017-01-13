@@ -1,0 +1,25 @@
+{
+  "name": "splash",
+  "version": "0.0.1",
+  "description": "Splash Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://585323bc89f5cfbd40000027@splash-lvilleprog.rhcloud.com/~/git/splash.git/"
+  },
+  "author": "Shrey Chowdhary",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-session": "^2.0.0-alpha.2",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "mongodb": "^2.1.16",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^1.0.0"
+  }
+}
