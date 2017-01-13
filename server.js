@@ -1,9 +1,9 @@
-var ip = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
+#!/usr/bin/env nodejs
+var ip = "localhost";
+var port = 8080;
 
 var express = require('express');
 var parser = require("body-parser");
-//replace session with redis-store
 var session = require("cookie-session");
 var router = require("./src/routes");
 var passport = require("passport");
