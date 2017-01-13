@@ -7,10 +7,6 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "ssh://585323bc89f5cfbd40000027@splash-lvilleprog.rhcloud.com/~/git/splash.git/"
-  },
   "author": "Shrey Chowdhary",
   "license": "ISC",
   "dependencies": {

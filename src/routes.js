@@ -12,6 +12,7 @@ router.get("/leaderboard",function(req, res){
         else{
             var leaderboard = [];
             rUsers.forEach(function(user){
+                console.log(user);
                 if(user.kills != null && user.kills != null && user.kills > 0){
                     leaderboard.push({name: user.name, kills: user.kills});
                 }
@@ -112,7 +113,7 @@ router.get("/randomize",isAdmin,function(req,res){
     users.find({alive:true},function(err,aUsers){
         notAssignedList = aUsers.map(function (item) { return item; });
         console.log(notAssignedList);
-        
+
     });
 });
 
