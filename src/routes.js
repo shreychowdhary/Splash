@@ -12,7 +12,6 @@ router.get("/leaderboard",function(req, res){
         else{
             var leaderboard = [];
             rUsers.forEach(function(user){
-                console.log(user);
                 if(user.kills != null && user.kills != null && user.kills > 0){
                     leaderboard.push({name: user.name, kills: user.kills});
                 }

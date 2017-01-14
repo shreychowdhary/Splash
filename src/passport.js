@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
 
         clientID        : "430650501688-00s618jd1j3rjqcvp19rb6vqek7o6hha.apps.googleusercontent.com",
         clientSecret    : "gxpQL4SmCMUkkCOhfCX4RLCc",
-        callbackURL     : "http://localhost:3000/oauth2callback",
+        callbackURL     : "http://lvillesplash.com/oauth2callback",
         //http://splash-lvilleprog.rhcloud.com/oauth2callback
     },
     function(token, refreshToken, profile, done) {
