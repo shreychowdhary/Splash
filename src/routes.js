@@ -107,11 +107,17 @@ router.post("/eliminate",function(req,res){
 });
 
 router.get("/randomize",isAdmin,function(req,res){
-    randList = [];
+    lastUser = Users.findOne({code:10001});
     notAssignedList = [];
     users.find({alive:true},function(err,aUsers){
         notAssignedList = aUsers.map(function (item) { return item; });
-        console.log(notAssignedList);
+        while(notAssignedList.length > 0){
+            randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1);
+            /*user.findOneAndUpdate({email:randList[randList.length-1].email},
+                {$set:{next:randUser.email}}, {new: true});*/
+            lastUser = randUser;
+            console.log(lastUser);
+        }
 
     });
 });
