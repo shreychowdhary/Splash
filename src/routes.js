@@ -107,7 +107,7 @@ router.post("/eliminate",function(req,res){
 });
 
 router.get("/randomize",isAdmin,function(req,res){
-    lastUser = Users.findOne({code:10001});
+    lastUser = users.findOne({code:10001});
     notAssignedList = [];
     users.find({alive:true},function(err,aUsers){
         notAssignedList = aUsers.map(function (item) { return item; });
