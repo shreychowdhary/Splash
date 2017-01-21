@@ -142,7 +142,9 @@ router.get("/randomize",isAdmin,function(req,res){
         console.log(lastUser.email + " " + firstUser.email);
         users.findOneAndUpdate({email:lastUser.email},
             {$set:{next:firstUser.email}},{new:true});
+        console.log("done random");
     });
+
 });
 
 router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'email'] }));
