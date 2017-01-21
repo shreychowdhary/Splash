@@ -61,7 +61,6 @@ router.post("/register",isAdmin,function(req,res){
     if(req.body.email.length > 4){
         users.find({code:{$exists:true}}).sort({_id: -1}).limit(1).find(function(err,lUser){
             if(lUser.length > 0 && lUser[0].code){
-                console.log("last");
                 code = lUser[0].code + Math.floor(Math.random() * 100);
             }
             else{
@@ -128,18 +127,28 @@ router.post("/addadmin",function(req,res){
 });
 
 router.get("/randomize",isAdmin,function(req,res){
-    lastUser = users.findOne({alive:true,code:10001});
-    notAssignedList = [];
     users.find({alive:true},function(err,aUsers){
         notAssignedList = aUsers.map(function (item) { return item; });
+        firstUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
+        lastUser = firstUser;
         while(notAssignedList.length > 0){
-            randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1);
-            console.log(users.findOneAndUpdate({email:lastUser},
-                {$set:{next:randUser.email}},{returnNewDocument:true}));
+            randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
+            console.log(lastUser.email + " " + randUser.email);
+            users.findOneAndUpdate({email:lastUser.email},
+                {$set:{next:randUser.email}},{new:true}, function(err,user){
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+                        console.log(user);
+                    }
+                });
             console.log(notAssignedList.length);
             lastUser = randUser;
         }
-
+        console.log(lastUser.email + " " + firstUser.email);
+        users.findOneAndUpdate({email:lastUser.email},
+            {$set:{next:firstUser.email}},{new:true});
     });
 });
 
