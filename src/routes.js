@@ -106,6 +106,27 @@ router.post("/eliminate",function(req,res){
     });
 });
 
+router.post("/addadmin",function(req,res){
+    users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
+        if(count>0){
+            res.status(400).send({
+                message: 'Already Exists'
+            });
+        }
+        else if(req.body.email.length > 4){
+            res.status(400).send({
+                message: 'Not Valid Email'
+            });
+        }
+        else{
+            users.create({
+                email: req.body.email + "@lawrenceville.org",
+                admin: true
+            });
+        }
+    });
+});
+
 router.get("/randomize",isAdmin,function(req,res){
     lastUser = users.findOne({alive:true,code:10001});
     notAssignedList = [];
