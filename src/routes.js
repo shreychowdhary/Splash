@@ -52,14 +52,7 @@ router.get("/admindata",isAdmin,function(req,res){
             return res.status(500).json({message: err.message});
         }
         else{
-            users.count({next: {$exists:true}}, function (err, count){
-                if(count > 0){
-                    console.log(rUsers);
-                }
-                else{
-                    res.send({adminData:rUsers});
-                }
-            });
+            res.send({adminData:rUsers});
         }
     });
 });
