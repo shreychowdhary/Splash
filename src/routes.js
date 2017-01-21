@@ -135,13 +135,21 @@ router.get("/randomize",isAdmin,function(req,res){
             randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
             console.log(lastUser.email + " " + randUser.email);
             users.findOneAndUpdate({email:lastUser.email},
-                {$set:{next:randUser.email}},{new:true});
+                {$set:{next:randUser.email}},{new:true},function(err,user){
+                    if(err){
+                        console.log(err);
+                    }
+                });
             console.log(notAssignedList.length);
             lastUser = randUser;
         }
         console.log(lastUser.email + " " + firstUser.email);
         users.findOneAndUpdate({email:lastUser.email},
-            {$set:{next:firstUser.email}},{new:true});
+            {$set:{next:firstUser.email}},{new:true},function(err,user){
+                if(err){
+                    console.log(err);
+                }
+            });
         console.log("done random");
     });
 
