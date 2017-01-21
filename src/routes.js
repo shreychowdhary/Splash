@@ -46,16 +46,20 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
-    users.count({email: {$exists:true}}, function (err, count){
-        console.log(count);
-    });
+
     users.find({alive:true},function(err,rUsers){
         if(err){
             return res.status(500).json({message: err.message});
         }
         else{
-            //if next set then send it in that format
-            res.send({adminData:rUsers});
+            users.count({next: {$exists:true}}, function (err, count){
+                if(count > 0){
+                    console.log(rUsers);
+                }
+                else{
+                    res.send({adminData:rUsers});
+                }
+            });
         }
     });
 });
