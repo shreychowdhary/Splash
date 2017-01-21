@@ -46,6 +46,9 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
+    users.count({email: {$exists:true}}, function (err, count){
+        console.log(count);
+    });
     users.find({alive:true},function(err,rUsers){
         if(err){
             return res.status(500).json({message: err.message});
