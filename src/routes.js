@@ -31,7 +31,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
     var profile = {
         name:req.user.name,
         kills:req.user.kills,
-        recentKills:req.user.recentKills,
+        lastKillDate:req.user.lastKillDate,
         alive:req.user.alive,
         next:req.user.next,
         code:req.user.code

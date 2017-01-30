@@ -3,6 +3,7 @@
     <th>Email</Email>
     <th>Code</th>
     <th>Kills</th>
+    <th>Last Kill</th>
     <th>Next</th>
 
     <tr ng-repeat="user in adminData">
@@ -10,6 +11,7 @@
         <td>{{user.email}}</td>
         <td>{{user.code}}</td>
         <td>{{user.kills}}</td>
+        <td>{{user.lastKillDate}}</td>
         <td>{{user.next}}</td>
     </tr>
 </table>
