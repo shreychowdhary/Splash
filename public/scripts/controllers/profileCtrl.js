@@ -6,4 +6,8 @@ angular.module('splash')
     console.log(profile);
     $scope.profile =  profile;
     });
+    profileDataService.getProfileData($scope.updateProfileData);
+    $scope.eliminate = function(){
+        profileDataService.eliminate($scope.eliminate,$scope.updateProfileData);
+    };
 })
