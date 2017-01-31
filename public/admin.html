@@ -7,13 +7,17 @@
 <body ng-app="splash">
     <div class="list" ng-controller="adminCtrl">
         <admin></admin>
+
         <form ng-submit="register()">
-            <input ng-model="email"/>@lawrenceville.org
-            <md-button class="md-raised">Register</md-button>
+            <md-input-container>
+                <label>Email @lawrenceville.org</label>
+                <input ng-model="email" type="text">
+            </md-input-container>
+            <md-button class="md-raised" type="submit">Register</md-button>
         </form>
         <md-button class="md-raised" ng-click="randomize()">Randomize</md-button>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
