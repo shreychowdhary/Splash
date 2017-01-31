@@ -9,6 +9,10 @@
     <div class="list" ng-controller="profileCtrl">
         <profile></profile>
     </div>
+    <form ng-submit= "eliminate()">
+      Enter your target code: <input ng-model="eliminateCode">
+      <button type="submit">Submit</button>
+    </form>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/profileCtrl.js"></script>
