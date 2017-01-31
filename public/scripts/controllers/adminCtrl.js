@@ -19,6 +19,6 @@ angular.module('splash')
 
     $scope.randomize = function(){
         console.log("randomize");
-        admindata.randomize($scope.updateAdminData);
+        adminDataService.randomize(adminDataService.getAdminData($scope.updateAdminData));
     }
 })

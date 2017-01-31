@@ -82,10 +82,13 @@ router.post("/register",isAdmin,function(req,res){
                         alive: true,
                         admin: false
                     }, function(){
-                        users.find({alive:true},function(err,rUsers){
-                            res.status(201).send({
-                                adminData: rUsers
-                            });
+                        users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
+                            if(err){
+                                return res.status(500).json({message: err.message});
+                            }
+                            else{
+                                res.send({adminData:rUsers});
+                            }
                         });
                     });
                 }
@@ -150,6 +153,16 @@ router.get("/randomize",isAdmin,function(req,res){
             {$set:{next:firstUser.email,sortIndex:index}},{new:true},function(err,user){
                 if(err){
                     console.log(err);
+                }
+                else{
+                    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
+                        if(err){
+                            return res.status(500).json({message: err.message});
+                        }
+                        else{
+                            res.send({adminData:rUsers});
+                        }
+                    });
                 }
             });
         console.log("done random");
