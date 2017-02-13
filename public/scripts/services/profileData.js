@@ -4,7 +4,6 @@ angular.module('splash')
         $http.get('/profiledata').then(cb);
     };
     this.eliminate = function(eliminateCode, cb){
-        console.log(eliminateCode);
         $http.post("/eliminate",{"eliminateCode":eliminateCode})
         .success(cb)
         .error(function (data, status, header, config) {

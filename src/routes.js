@@ -98,10 +98,17 @@ router.post("/register",isAdmin,function(req,res){
 });
 //add brute force prevention here
 router.post("/eliminate",function(req,res){
-    console.log("eliminate");
-    users.findOne({code:req.eliminateCode},function(err,rUser){
+    console.log(req.body.eliminateCode);
+    users.findOne({code:req.body.eliminateCode},function(err,rUser){
         if(req.user.next == rUser.email && req.user.alive){
-            console.log(rUser.email + "elimanted");
+            rUsers.alive = false;
+            rUser.save();
+            users.findOneAndUpdate({email:req.user.email},
+                {$set:{next:rUser.next}},{new:true},function(err){
+                    if(err){
+                        console.log(err);
+                    }
+                });
         }
         else{
             console.log("wrong result");
