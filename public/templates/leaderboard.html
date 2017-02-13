@@ -1,8 +1,7 @@
-<table border="1">
-    <th>Name</th>
-    <th>Kills</th>
-    <tr ng-repeat="player in leaderboard">
-        <td>{{player.name}}</td>
-        <td>{{player.kills}}</td>
-    </tr>
-</table>
+<md-list>
+    <md-subheader>Leaderboard</md-subheader>
+    <md-list-item ng-repeat="player in leaderboard">
+        <h1>{{player.name}}</h1>
+        <p>{{player.kills}}</p>
+    </md-list-item>
+</md-list>

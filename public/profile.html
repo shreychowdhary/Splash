@@ -9,14 +9,14 @@
     <h1>Profile</h1>
     <div class="list" ng-controller="profileCtrl">
         <profile></profile>
+        <form ng-submit= "eliminate()">
+            <md-input-container>
+                <label>Code</label>
+                <input ng-model="eliminateCode" type="Number">
+            </md-input-container>
+            <md-button class="md-raised" type="submit">Submit</md-button>
+        </form>
     </div>
-    <form ng-submit= "eliminate()">
-        <md-input-container>
-            <label>Code</label>
-            <input ng-model="eliminateCode" type="Number">
-        </md-input-container>
-        <md-button class="md-raised" type="submit">Submit</md-button>
-    </form>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>

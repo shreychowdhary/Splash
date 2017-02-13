@@ -12,8 +12,13 @@ router.get("/leaderboard",function(req, res){
         else{
             var leaderboard = [];
             rUsers.forEach(function(user){
-                if(user.kills != null && user.kills != null && user.kills > 0){
-                    leaderboard.push({name: user.name, kills: user.kills});
+                if(user.kills != null  && user.kills > 0){
+                    if(user.name != null){
+                        leaderboard.push({name: user.name, kills: user.kills});
+                    }
+                    else{
+                        leaderboard.push({name: user.email, kills: user.kills});
+                    }
                 }
             });
             //change this to something more secure in the future
@@ -36,8 +41,6 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         next:req.user.next,
         code:req.user.code
     }
-    console.log("profile");
-    console.log(profile);
     res.json({profile:profile});
 });
 
@@ -46,7 +49,6 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
-
     users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
         if(err){
             return res.status(500).json({message: err.message});
@@ -64,10 +66,8 @@ router.post("/register",isAdmin,function(req,res){
                 code = lUser[0].code + Math.floor(Math.random() * 100);
             }
             else{
-                console.log("first");
                 code = 10001;
             }
-            //probably change some of this to be created when registered
             users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
                 if(count>0){
                     res.status(400).send({
@@ -98,33 +98,13 @@ router.post("/register",isAdmin,function(req,res){
 });
 //add brute force prevention here
 router.post("/eliminate",function(req,res){
-    users.findOne({code:req.code},function(err,rUser){
-        if(req.user.next == rUser.code && req.user.alive){
+    console.log("eliminate");
+    users.findOne({code:req.eliminateCode},function(err,rUser){
+        if(req.user.next == rUser.email && req.user.alive){
             console.log(rUser.email + "elimanted");
         }
         else{
             console.log("wrong result");
-        }
-    });
-});
-
-router.post("/addadmin",function(req,res){
-    users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
-        if(count>0){
-            res.status(400).send({
-                message: 'Already Exists'
-            });
-        }
-        else if(req.body.email.length > 4){
-            res.status(400).send({
-                message: 'Not Valid Email'
-            });
-        }
-        else{
-            users.create({
-                email: req.body.email + "@lawrenceville.org",
-                admin: true
-            });
         }
     });
 });
@@ -165,7 +145,6 @@ router.get("/randomize",isAdmin,function(req,res){
                     });
                 }
             });
-        console.log("done random");
     });
 
 });

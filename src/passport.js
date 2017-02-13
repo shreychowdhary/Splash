@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
 
         clientID        : "430650501688-00s618jd1j3rjqcvp19rb6vqek7o6hha.apps.googleusercontent.com",
         clientSecret    : "gxpQL4SmCMUkkCOhfCX4RLCc",
-        callbackURL     : "http://lvillesplash.com/oauth2callback",
+        callbackURL     : "http://localhost:8080/oauth2callback",
         //http://localhost:3000/oauth2callback
     },
     function(token, refreshToken, profile, done) {
@@ -25,12 +25,11 @@ passport.use(new GoogleStrategy({
                 console.log("ERR");
                 return done(err);
             }
-            if (user && user.id) {
+            if (user && user.name) {
                 console.log("returning");
-                console.log(user.id);
                 // if a user is found, log them in
                 return done(null, user);
-            } else if(user && !user.id){
+            } else if(user && !user.name){
                 //convert this to just adding the name
                 console.log("paid");
                 user.update({
