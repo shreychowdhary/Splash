@@ -16,4 +16,9 @@ angular.module('splash')
     $scope.register = function(){
         adminDataService.register($scope.email,$scope.updateAdminData);
     };
+
+    $scope.randomize = function(){
+        console.log("randomize");
+        adminDataService.randomize(adminDataService.getAdminData($scope.updateAdminData));
+    }
 })

@@ -9,7 +9,8 @@ var users = new mongoose.Schema({
     lastKillDate: Date,
     alive: Boolean,
     next: String,
-    admin: Boolean
+    admin: Boolean,
+    sortIndex: Number
 });
 
 var model = mongoose.model("users", users);

@@ -11,4 +11,8 @@ angular.module('splash')
           console.log("registration failed");
       });
   }
+
+  this.randomize = function(cb){
+      $http.get("/randomize").then(cb);
+  }
 });
