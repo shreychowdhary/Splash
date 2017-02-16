@@ -100,17 +100,20 @@ router.post("/register",isAdmin,function(req,res){
 router.post("/eliminate",function(req,res){
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser){
-        if(req.user.next == rUser.email && req.user.alive){
-            rUsers.alive = false;
+        if(rUser != null && req.user.alive && req.user.next == rUser.email ){
+            rUser.alive = false;
             rUser.save();
+            req.user.next = rUser.next;
             users.findOneAndUpdate({email:req.user.email},
                 {$set:{next:rUser.next}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
                 });
+            res.status(200).send();
         }
         else{
+            res.status(400).send();
             console.log("wrong result");
         }
     });
