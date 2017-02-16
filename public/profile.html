@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Splash</title>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+</head>
+<body ng-app="splash">
+    <h1>Profile</h1>
+    <div class="list" ng-controller="profileCtrl">
+        <!-- found in templates/profile.html; shows all the properties of a user (name, etc.) -->
+        <profile></profile>
+    </div>
+    <form ng-submit= "eliminate()">
+        <md-input-container>
+            <label>Code</label>
+            <input ng-model="eliminateCode" type="Number">
+        </md-input-container>
+        <md-button class="md-raised" type="submit">Submit</md-button>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script src="/scripts/app.js"></script>
+    <script src="/scripts/controllers/profileCtrl.js"></script>
+    <script src="/scripts/services/profileData.js"></script>
+    <script src="/scripts/directives/profile.js"></script>
+</body>
+</html>

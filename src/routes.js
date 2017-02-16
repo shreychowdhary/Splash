@@ -4,8 +4,6 @@ var users = require("./models/users");
 var passport = require("./passport");
 var throttler = require('./throttle');
 
-// setup the brute force prevention system (data is saved in MongoDB collection splash.bruteforce-store)
-
 router.get("/leaderboard", function(req, res){
     users.find({kills:{$gt:0}}).sort({kills: -1}).limit(10).find(function(err,rUsers){
         //implement leaderboard filter
@@ -44,10 +42,10 @@ router.get("/profiledata",isLoggedIn,function(req,res){
             res.json({profile:profile});
         }
     });
-});
 
-router.get("/admin",isAdmin,function(req,res){
-    res.sendFile("/public/admin.html", {'root': './'});
+// send the HTML for the admin page in response to a GET request (if the user is an admin)
+router.get("/admin", isAdmin, function(req, res){
+    res.sendFile("/public/admin.html", { 'root': './' });
 });
 //put this into a function at somepoint
 router.get("/admindata",isAdmin,function(req,res){
@@ -65,7 +63,6 @@ router.get('/signout', function(req, res){
     req.logout();
     res.redirect('/');
 });
-
 
 router.post("/register", isAdmin, function(req, res) {
     if (req.body.email.length > 4) {
@@ -105,7 +102,6 @@ router.post("/register", isAdmin, function(req, res) {
         });
     }
 });
-//
 
 router.post("/insertuser",isAdmin,function(req,res){
     console.log("insert");
