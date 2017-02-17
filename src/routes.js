@@ -109,7 +109,7 @@ router.post("/eliminate",function(req,res){
         console.log(req.user);
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
             users.findOneAndUpdate({email:req.user.email},
-                {$set:{next:rUser.next}},{$inc:{kills:1}},{new:true},function(err){
+                {$set:{next:rUser.next},$inc:{kills:1}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
