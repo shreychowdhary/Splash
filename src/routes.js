@@ -34,6 +34,7 @@ router.get("/profile",isLoggedIn,function(req,res){
 
 router.get("/profiledata",isLoggedIn,function(req,res){
     users.findOne({name:req.user.name},function(err,rUser){
+        console.log(rUser);
         var profile = {
             name:rUser.name,
             kills:rUser.kills,
