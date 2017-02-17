@@ -1,7 +1,6 @@
 var mongoose = require("mongoose");
 
 var users = new mongoose.Schema({
-    id: String,
     code: Number,
     email: String,
     name: String,
@@ -9,7 +8,8 @@ var users = new mongoose.Schema({
     lastKillDate: Date,
     alive: Boolean,
     next: String,
-    admin: Boolean
+    admin: Boolean,
+    sortIndex: Number
 });
 
 var model = mongoose.model("users", users);

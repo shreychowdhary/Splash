@@ -12,8 +12,13 @@ router.get("/leaderboard",function(req, res){
         else{
             var leaderboard = [];
             rUsers.forEach(function(user){
-                if(user.kills != null && user.kills != null && user.kills > 0){
-                    leaderboard.push({name: user.name, kills: user.kills});
+                if(user.kills != null  && user.kills > 0){
+                    if(user.name != null){
+                        leaderboard.push({name: user.name, kills: user.kills});
+                    }
+                    else{
+                        leaderboard.push({name: user.email, kills: user.kills});
+                    }
                 }
             });
             //change this to something more secure in the future
@@ -31,13 +36,11 @@ router.get("/profiledata",isLoggedIn,function(req,res){
     var profile = {
         name:req.user.name,
         kills:req.user.kills,
-        recentKills:req.user.recentKills,
+        lastKillDate:req.user.lastKillDate,
         alive:req.user.alive,
         next:req.user.next,
         code:req.user.code
     }
-    console.log("profile");
-    console.log(profile);
     res.json({profile:profile});
 });
 
@@ -46,12 +49,11 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
-    users.find({alive:true},function(err,rUsers){
+    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
         if(err){
             return res.status(500).json({message: err.message});
         }
         else{
-            //if next set then send it in that format
             res.send({adminData:rUsers});
         }
     });
@@ -61,14 +63,11 @@ router.post("/register",isAdmin,function(req,res){
     if(req.body.email.length > 4){
         users.find({code:{$exists:true}}).sort({_id: -1}).limit(1).find(function(err,lUser){
             if(lUser.length > 0 && lUser[0].code){
-                console.log("last");
                 code = lUser[0].code + Math.floor(Math.random() * 100);
             }
             else{
-                console.log("first");
                 code = 10001;
             }
-            //probably change some of this to be created when registered
             users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
                 if(count>0){
                     res.status(400).send({
@@ -83,10 +82,13 @@ router.post("/register",isAdmin,function(req,res){
                         alive: true,
                         admin: false
                     }, function(){
-                        users.find({alive:true},function(err,rUsers){
-                            res.status(201).send({
-                                adminData: rUsers
-                            });
+                        users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
+                            if(err){
+                                return res.status(500).json({message: err.message});
+                            }
+                            else{
+                                res.send({adminData:rUsers});
+                            }
                         });
                     });
                 }
@@ -96,30 +98,65 @@ router.post("/register",isAdmin,function(req,res){
 });
 //add brute force prevention here
 router.post("/eliminate",function(req,res){
-    users.findOne({code:req.code},function(err,rUser){
-        if(req.user.next == rUser.code && req.user.alive){
-            console.log(rUser.email + "elimanted");
+    console.log(req.body.eliminateCode);
+    users.findOne({code:req.body.eliminateCode},function(err,rUser){
+        if(rUser != null && req.user.alive && req.user.next == rUser.email ){
+            rUser.alive = false;
+            rUser.save();
+            req.user.next = rUser.next;
+            users.findOneAndUpdate({email:req.user.email},
+                {$set:{next:rUser.next}},{new:true},function(err){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            res.status(200).send();
         }
         else{
+            res.status(400).send();
             console.log("wrong result");
         }
     });
 });
 
 router.get("/randomize",isAdmin,function(req,res){
-    lastUser = users.findOne({alive:true,code:10001});
-    notAssignedList = [];
     users.find({alive:true},function(err,aUsers){
         notAssignedList = aUsers.map(function (item) { return item; });
+        firstUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
+        lastUser = firstUser;
+        index = 0;
         while(notAssignedList.length > 0){
-            randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1);
-            users.findOneAndUpdate({email:lastUser},
-                {$set:{next:randUser.email}}, {new: true});
+            randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
+            console.log(lastUser.email + " " + randUser.email);
+            users.findOneAndUpdate({email:lastUser.email},
+                {$set:{next:randUser.email,sortIndex:index}},{new:true},function(err,user){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            console.log(notAssignedList.length);
             lastUser = randUser;
-            console.log(lastUser);
+            index++;
         }
-
+        console.log(lastUser.email + " " + firstUser.email);
+        users.findOneAndUpdate({email:lastUser.email},
+            {$set:{next:firstUser.email,sortIndex:index}},{new:true},function(err,user){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
+                        if(err){
+                            return res.status(500).json({message: err.message});
+                        }
+                        else{
+                            res.send({adminData:rUsers});
+                        }
+                    });
+                }
+            });
     });
+
 });
 
 router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'email'] }));

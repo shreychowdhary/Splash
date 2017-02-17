@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('splash', []);
+angular.module('splash', ['ngMaterial']);

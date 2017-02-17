@@ -26,12 +26,11 @@ passport.use(new GoogleStrategy({
                 console.log("ERR");
                 return done(err);
             }
-            if (user && user.id) {
+            if (user && user.name) {
                 console.log("returning");
-                console.log(user.id);
                 // if a user is found, log them in
                 return done(null, user);
-            } else if(user && !user.id){
+            } else if(user && !user.name){
                 //convert this to just adding the name
                 console.log("paid");
                 user.update({
