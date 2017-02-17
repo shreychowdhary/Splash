@@ -3,13 +3,14 @@ var router = express.Router();
 var users = require("./models/users");
 var passport = require("./passport");
 
+// respond to GET requests on the leaderboard page
 router.get("/leaderboard",function(req, res){
-    users.find({},function(err,rUsers){
-        //implement leaderboard filter
-        if(err){
+    users.find({}, function(err, rUsers) {
+        // implement leaderboard filter
+        if (err) {
             return res.status(500).json({message: err.message});
         }
-        else{
+        else {
             var leaderboard = [];
             rUsers.forEach(function(user){
                 if(user.kills != null  && user.kills > 0){
@@ -21,18 +22,22 @@ router.get("/leaderboard",function(req, res){
                     }
                 }
             });
-            //change this to something more secure in the future
-            res.json({leaderboard: leaderboard});
+
+            // send the leadboard as JSON in response
+            // (change this to something more secure in the future)
+            res.json({ leaderboard: leaderboard });
         }
     })
-
 });
 
-router.get("/profile",isLoggedIn,function(req,res){
-    res.sendFile("/public/profile.html", {'root': './'});
+// respond to GET requests on the profile page (once logged in)
+router.get("/profile", isLoggedIn, function(req, res) {
+    // send the HTML for the profile page
+    res.sendFile("/public/profile.html", { 'root': './' });
 });
 
-router.get("/profiledata",isLoggedIn,function(req,res){
+// respond to GET requests for profile data with all of the user's data
+router.get("/profiledata", isLoggedIn, function(req, res) {
     var profile = {
         name:req.user.name,
         kills:req.user.kills,
@@ -44,8 +49,9 @@ router.get("/profiledata",isLoggedIn,function(req,res){
     res.json({profile:profile});
 });
 
-router.get("/admin",isAdmin,function(req,res){
-    res.sendFile("/public/admin.html", {'root': './'});
+// send the HTML for the admin page in response to a GET request (if the user is an admin)
+router.get("/admin", isAdmin, function(req, res){
+    res.sendFile("/public/admin.html", { 'root': './' });
 });
 
 router.get("/admindata",isAdmin,function(req,res){
@@ -53,8 +59,8 @@ router.get("/admindata",isAdmin,function(req,res){
         if(err){
             return res.status(500).json({message: err.message});
         }
-        else{
-            res.send({adminData:rUsers});
+        else {
+            res.send({ adminData:rUsers });
         }
     });
 });
@@ -96,6 +102,7 @@ router.post("/register",isAdmin,function(req,res){
         });
     }
 });
+
 //add brute force prevention here
 router.post("/eliminate",function(req,res){
     console.log(req.body.eliminateCode);
