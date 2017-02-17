@@ -36,13 +36,16 @@ router.get("/profiledata",isLoggedIn,function(req,res){
     users.findOne({name:req.user.name},function(err,rUser){
         console.log(rUser);
         var profile = {
+            email:rUser.email,
             name:rUser.name,
             kills:rUser.kills,
             lastKillDate:rUser.lastKillDate,
             alive:rUser.alive,
             next:rUser.next,
+            admin:rUser.admin,
             code:rUser.code
         }
+        req.user = profile;
         res.json({profile:profile});
     });
 
@@ -114,6 +117,7 @@ router.post("/eliminate",function(req,res){
                         console.log(err);
                     }
                 });
+
             rUser.alive = false;
             rUser.next = null;
             rUser.save();
@@ -121,7 +125,7 @@ router.post("/eliminate",function(req,res){
         }
         else{
             res.status(400).send();
-            console.log("wrong result");
+            console.log("wrong code");
         }
     });
 });

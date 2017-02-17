@@ -3,11 +3,17 @@ var users = require("./models/users");
 var passport = require("passport");
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(id, done) {
+    users.findById(id,function(err,rUser){
+        if(err){
+        }
+        else{
+            done(null, rUser);
+        }
+    });
 });
 
 passport.use(new GoogleStrategy({
