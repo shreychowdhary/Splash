@@ -96,10 +96,12 @@ router.post("/register",isAdmin,function(req,res){
         });
     }
 });
+
 //add brute force prevention here
 router.post("/eliminate",function(req,res){
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser){
+        //might need to change the sortIndex
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
             rUser.alive = false;
             rUser.save();
