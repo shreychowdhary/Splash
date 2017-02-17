@@ -106,6 +106,7 @@ router.post("/eliminate",function(req,res){
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser){
         //might need to change the sortIndex
+        console.log(req.user);
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
             users.findOneAndUpdate({email:req.user.email},
                 {$set:{next:rUser.next}},{$inc:{kills:1}},{new:true},function(err){
@@ -185,6 +186,7 @@ function isLoggedIn(req, res, next) {
 }
 
 function isAdmin(req,res,next) {
+    //should probably update this to be more secure
     if (req.isAuthenticated() && req.user.admin == true){
 		return next();
     }
