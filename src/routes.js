@@ -33,15 +33,18 @@ router.get("/profile",isLoggedIn,function(req,res){
 });
 
 router.get("/profiledata",isLoggedIn,function(req,res){
-    var profile = {
-        name:req.user.name,
-        kills:req.user.kills,
-        lastKillDate:req.user.lastKillDate,
-        alive:req.user.alive,
-        next:req.user.next,
-        code:req.user.code
-    }
-    res.json({profile:profile});
+    users.findOne({name:req.user.name},function(err,rUser){
+        var profile = {
+            name:rUser.name,
+            kills:rUser.kills,
+            lastKillDate:rUser.lastKillDate,
+            alive:rUser.alive,
+            next:rUser.next,
+            code:rUser.code
+        }
+        res.json({profile:profile});
+    });
+
 });
 
 router.get("/admin",isAdmin,function(req,res){
@@ -103,16 +106,15 @@ router.post("/eliminate",function(req,res){
     users.findOne({code:req.body.eliminateCode},function(err,rUser){
         //might need to change the sortIndex
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
-            rUser.alive = false;
-            rUser.save();
-            req.user.next = rUser.next;
-            req.user.kills++;
             users.findOneAndUpdate({email:req.user.email},
                 {$set:{next:rUser.next}},{$inc:{kills:1}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
                 });
+            rUser.alive = false;
+            rUser.next = null;
+            rUser.save();
             res.status(200).send();
         }
         else{
