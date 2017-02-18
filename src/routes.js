@@ -3,20 +3,20 @@ var router = express.Router();
 var users = require("./models/users");
 var passport = require("./passport");
 
-router.get("/leaderboard",function(req, res){
-    users.find({},function(err,rUsers){
+router.get("/leaderboard", function(req, res){
+    users.find({}, function(err, rUsers) {
         //implement leaderboard filter
-        if(err){
-            return res.status(500).json({message: err.message});
+        if (err) {
+            return res.status(500).json({ message: err.message });
         }
-        else{
+        else {
             var leaderboard = [];
-            rUsers.forEach(function(user){
-                if(user.kills != null  && user.kills > 0){
-                    if(user.name != null){
-                        leaderboard.push({name: user.name, kills: user.kills});
+            rUsers.forEach(function(user) {
+                if (user.kills != null  && user.kills > 0) {
+                    if (user.name != null) {
+                        leaderboard.push({ name: user.name, kills: user.kills });
                     }
-                    else{
+                    else {
                         leaderboard.push({name: user.email, kills: user.kills});
                     }
                 }
@@ -39,6 +39,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         lastKillDate:req.user.lastKillDate,
         alive:req.user.alive,
         next:req.user.next,
+        admin: req.user.admin,
         code:req.user.code
     }
     res.json({profile:profile});
@@ -180,7 +181,7 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
-function isAdmin(req,res,next) {
+function isAdmin(req, res, next) {
     if (req.isAuthenticated() && req.user.admin == true){
 		return next();
     }
