@@ -43,6 +43,21 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         code:req.user.code
     }
     res.json({profile:profile});
+    users.findOne({name:req.user.name},function(err,rUser){
+        console.log(rUser);
+        var profile = {
+            email:rUser.email,
+            name:rUser.name,
+            kills:rUser.kills,
+            lastKillDate:rUser.lastKillDate,
+            alive:rUser.alive,
+            next:rUser.next,
+            admin:rUser.admin,
+            code:rUser.code
+        }
+        req.user = profile;
+        res.json({profile:profile});
+    });
 });
 
 router.get("/admin",isAdmin,function(req,res){
@@ -103,21 +118,23 @@ router.post("/eliminate",function(req,res){
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser){
         //might need to change the sortIndex
+        console.log(req.user);
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
-            rUser.alive = false;
-            rUser.save();
-            req.user.next = rUser.next;
             users.findOneAndUpdate({email:req.user.email},
-                {$set:{next:rUser.next}},{new:true},function(err){
+                {$set:{next:rUser.next},$inc:{kills:1}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
                 });
+
+            rUser.alive = false;
+            rUser.next = null;
+            rUser.save();
             res.status(200).send();
         }
         else{
             res.status(400).send();
-            console.log("wrong result");
+            console.log("wrong code");
         }
     });
 });
@@ -181,7 +198,12 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
+<<<<<<< HEAD
 function isAdmin(req, res, next) {
+=======
+function isAdmin(req,res,next) {
+    //should probably update this to be more secure
+>>>>>>> 1db7b86dcec806c7b8cd92c76bf13428648a0122
     if (req.isAuthenticated() && req.user.admin == true){
 		return next();
     }
