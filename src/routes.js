@@ -198,12 +198,8 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
-<<<<<<< HEAD
 function isAdmin(req, res, next) {
-=======
-function isAdmin(req,res,next) {
     //should probably update this to be more secure
->>>>>>> 1db7b86dcec806c7b8cd92c76bf13428648a0122
     if (req.isAuthenticated() && req.user.admin == true){
 		return next();
     }
