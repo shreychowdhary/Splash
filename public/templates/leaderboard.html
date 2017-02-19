@@ -1,7 +1,17 @@
-<md-list>
-    <md-subheader>Leaderboard</md-subheader>
-    <md-list-item ng-repeat="player in leaderboard">
-        <h1>{{player.name}}</h1>
-        <p>{{player.kills}}</p>
-    </md-list-item>
-</md-list>
+<div name="leaderboard">
+    <md-toolbar>
+        <h2 class="md-toolbar-tools">
+            <span>leaderboard</span>
+        </h2>
+    </md-toolbar>
+    <md-content>
+        <md-list>
+            <md-list-item class="md-2-line" ng-repeat="player in leaderboard">
+                <div class="md-list-item-text" layout="row">
+                    <h2>{{player.name}}</h2>
+                    <h2>{{player.kills}}</h2>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>
