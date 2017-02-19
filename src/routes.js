@@ -45,7 +45,6 @@ router.get("/profiledata",isLoggedIn,function(req,res){
             admin:rUser.admin,
             code:rUser.code
         }
-        req.user = profile;
         res.json({profile:profile});
     });
 
@@ -132,19 +131,23 @@ router.post("/eliminate",function(req,res){
 
 router.get("/randomize",isAdmin,function(req,res){
     users.find({alive:true},function(err,aUsers){
+
         notAssignedList = aUsers.map(function (item) { return item; });
         firstUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
         lastUser = firstUser;
         index = 0;
+
         while(notAssignedList.length > 0){
             randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
             console.log(lastUser.email + " " + randUser.email);
+
             users.findOneAndUpdate({email:lastUser.email},
                 {$set:{next:randUser.email,sortIndex:index}},{new:true},function(err,user){
                     if(err){
                         console.log(err);
                     }
                 });
+
             console.log(notAssignedList.length);
             lastUser = randUser;
             index++;
@@ -168,6 +171,10 @@ router.get("/randomize",isAdmin,function(req,res){
             });
     });
 
+});
+
+router.get("/clearnext",isAdmin,function(req,res){
+    users.update({admin:false},{next:null});
 });
 
 router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'email'] }));
