@@ -56,7 +56,9 @@ router.get("/profiledata",isLoggedIn,function(req,res){
             code:rUser.code
         }
         req.user = profile;
-        res.json({profile:profile});
+
+        // commenting this out bc apparently using res.json() twice in the same function causes crashes
+        //res.json({profile:profile});
     });
 });
 
@@ -65,32 +67,33 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
-    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
-        if(err){
+    users.find({ alive:true }).sort({ sortIndex:1 }).find(function(err,rUsers) {
+        if (err) {
             return res.status(500).json({message: err.message});
         }
-        else{
+        else {
             res.send({adminData:rUsers});
         }
     });
 });
 
-router.post("/register",isAdmin,function(req,res){
-    if(req.body.email.length > 4){
-        users.find({code:{$exists:true}}).sort({_id: -1}).limit(1).find(function(err,lUser){
-            if(lUser.length > 0 && lUser[0].code){
+router.post("/register", isAdmin, function(req, res) {
+    if (req.body.email.length > 4) {
+        users.find({ code: { $exists: true } }).sort({ _id: -1 }).limit(1).find(function(err, lUser) {
+            if (lUser.length > 0 && lUser[0].code) {
+                // this might need to get changed later to accomodate more users?
                 code = lUser[0].code + Math.floor(Math.random() * 100);
             }
-            else{
+            else {
                 code = 10001;
             }
-            users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
-                if(count>0){
+            users.count({ email: req.body.email + "@lawrenceville.org" }, function (err, count) {
+                if (count > 0) {
                     res.status(400).send({
                         message: 'Already Exists'
                     });
                 }
-                else{
+                else {
                     users.create({
                         code: code,
                         kills: 0,
