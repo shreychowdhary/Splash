@@ -3,20 +3,20 @@ var router = express.Router();
 var users = require("./models/users");
 var passport = require("./passport");
 
-router.get("/leaderboard",function(req, res){
-    users.find({},function(err,rUsers){
+router.get("/leaderboard", function(req, res){
+    users.find({}, function(err, rUsers) {
         //implement leaderboard filter
-        if(err){
-            return res.status(500).json({message: err.message});
+        if (err) {
+            return res.status(500).json({ message: err.message });
         }
-        else{
+        else {
             var leaderboard = [];
-            rUsers.forEach(function(user){
-                if(user.kills != null  && user.kills > 0){
-                    if(user.name != null){
-                        leaderboard.push({name: user.name, kills: user.kills});
+            rUsers.forEach(function(user) {
+                if (user.kills != null  && user.kills > 0) {
+                    if (user.name != null) {
+                        leaderboard.push({ name: user.name, kills: user.kills });
                     }
-                    else{
+                    else {
                         leaderboard.push({name: user.email, kills: user.kills});
                     }
                 }
@@ -33,6 +33,16 @@ router.get("/profile",isLoggedIn,function(req,res){
 });
 
 router.get("/profiledata",isLoggedIn,function(req,res){
+    var profile = {
+        name:req.user.name,
+        kills:req.user.kills,
+        lastKillDate:req.user.lastKillDate,
+        alive:req.user.alive,
+        next:req.user.next,
+        admin: req.user.admin,
+        code:req.user.code
+    }
+    res.json({profile:profile});
     users.findOne({name:req.user.name},function(err,rUser){
         console.log(rUser);
         var profile = {
@@ -47,7 +57,6 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         }
         res.json({profile:profile});
     });
-
 });
 
 router.get("/admin",isAdmin,function(req,res){
@@ -196,7 +205,7 @@ function isLoggedIn(req, res, next) {
 	res.redirect('/');
 }
 
-function isAdmin(req,res,next) {
+function isAdmin(req, res, next) {
     //should probably update this to be more secure
     if (req.isAuthenticated() && req.user.admin == true){
 		return next();
