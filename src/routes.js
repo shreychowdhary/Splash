@@ -45,21 +45,6 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         code:req.user.code
     }
     res.json({profile:profile});
-    users.findOne({name:req.user.name},function(err,rUser){
-        console.log(rUser);
-        var profile = {
-            email:rUser.email,
-            name:rUser.name,
-            kills:rUser.kills,
-            lastKillDate:rUser.lastKillDate,
-            alive:rUser.alive,
-            next:rUser.next,
-            admin:rUser.admin,
-            code:rUser.code
-        }
-
-        res.json({profile:profile});
-    });
 });
 
 router.get("/admin",isAdmin,function(req,res){
@@ -133,11 +118,14 @@ router.post("/eliminate", isLoggedIn, function(req, res) {
             rUser.alive = false;
             rUser.next = null;
             rUser.save();
-            res.status(200).send();
+            res.status(200).send({
+                message:"Congratulations"
+            });
         }
         else{
-            res.status(400).send();
-            console.log("wrong code");
+            res.status(400).send({
+                message: 'Wrong Code'
+            });
         }
     });
 });
