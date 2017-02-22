@@ -183,7 +183,8 @@ router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'ema
 router.get('/oauth2callback',
    passport.authenticate('google', {
            successRedirect : '/profile',
-           failureRedirect : '/'
+           failureRedirect : '/',
+           failureFlash: true
 }));
 
 function isLoggedIn(req, res, next) {

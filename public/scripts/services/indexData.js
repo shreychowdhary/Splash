@@ -1,5 +1,5 @@
 angular.module('splash')
-.service('leaderboardDataService', function($http) {
+.service('indexDataService', function($http) {
   this.getLeaderboard = function(cb) {
     $http.get('/leaderboard').then(cb);
   };
