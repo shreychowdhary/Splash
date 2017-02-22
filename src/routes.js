@@ -3,6 +3,28 @@ var router = express.Router();
 var users = require("./models/users");
 var passport = require("./passport");
 
+// setup the brute force prevention system (data is saved in MongoDB collection splash.bruteforce-store)
+var expressBrute = require('express-brute');
+var mongoStore = require('express-brute-mongo');
+var mongoClient = require('mongodb').MongoClient;
+var store = new mongoStore(function(ready) {
+    mongoClient.connect("mongodb://localhost/splash", function(err, db) {
+        if (err) {
+            console.log(err);
+        } else {
+            ready(db.collection('bruteforce-store'));
+        }
+    });
+});
+var bruteforce = new expressBrute(store, {
+    freeRetries: 2,                             // only allow 2 incorrect requests before locking out
+    minWait: 5 * 1000,                          // min wait time of 5 seconds
+    maxWait: 5 * 60 * 1000,                     // max wait time of 5 minutes
+
+    // ideally disable the submit button to inform the user that they can't submit again
+    failCallback: expressBrute.FailTooManyRequests
+});
+
 router.get("/leaderboard", function(req, res){
     users.find({}, function(err, rUsers) {
         //implement leaderboard filter
@@ -55,6 +77,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
             admin:rUser.admin,
             code:rUser.code
         }
+        
         res.json({profile:profile});
     });
 });
@@ -64,32 +87,33 @@ router.get("/admin",isAdmin,function(req,res){
 });
 
 router.get("/admindata",isAdmin,function(req,res){
-    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
-        if(err){
+    users.find({ alive:true }).sort({ sortIndex:1 }).find(function(err,rUsers) {
+        if (err) {
             return res.status(500).json({message: err.message});
         }
-        else{
+        else {
             res.send({adminData:rUsers});
         }
     });
 });
 
-router.post("/register",isAdmin,function(req,res){
-    if(req.body.email.length > 4){
-        users.find({code:{$exists:true}}).sort({_id: -1}).limit(1).find(function(err,lUser){
-            if(lUser.length > 0 && lUser[0].code){
+router.post("/register", isAdmin, function(req, res) {
+    if (req.body.email.length > 4) {
+        users.find({ code: { $exists: true } }).sort({ _id: -1 }).limit(1).find(function(err, lUser) {
+            if (lUser.length > 0 && lUser[0].code) {
+                // this might need to get changed later to accomodate more users?
                 code = lUser[0].code + Math.floor(Math.random() * 100);
             }
-            else{
+            else {
                 code = 10001;
             }
-            users.count({email: req.body.email + "@lawrenceville.org"}, function (err, count){
-                if(count>0){
+            users.count({ email: req.body.email + "@lawrenceville.org" }, function (err, count) {
+                if (count > 0) {
                     res.status(400).send({
                         message: 'Already Exists'
                     });
                 }
-                else{
+                else {
                     users.create({
                         code: code,
                         kills: 0,
@@ -112,10 +136,10 @@ router.post("/register",isAdmin,function(req,res){
     }
 });
 
-//add brute force prevention here
-router.post("/eliminate",function(req,res){
+// note the use of Express-Brute for brute force prevention
+router.post("/eliminate", bruteforce.prevent, function(req, res) {
     console.log(req.body.eliminateCode);
-    users.findOne({code:req.body.eliminateCode},function(err,rUser){
+    users.findOne({code:req.body.eliminateCode},function(err,rUser) {
         //might need to change the sortIndex
         console.log(req.user);
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
