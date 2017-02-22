@@ -4,26 +4,6 @@ var users = require("./models/users");
 var passport = require("./passport");
 
 // setup the brute force prevention system (data is saved in MongoDB collection splash.bruteforce-store)
-var expressBrute = require('express-brute');
-var mongoStore = require('express-brute-mongo');
-var mongoClient = require('mongodb').MongoClient;
-var store = new mongoStore(function(ready) {
-    mongoClient.connect("mongodb://localhost/splash", function(err, db) {
-        if (err) {
-            console.log(err);
-        } else {
-            ready(db.collection('bruteforce-store'));
-        }
-    });
-});
-var bruteforce = new expressBrute(store, {
-    freeRetries: 2,                             // only allow 2 incorrect requests before locking out
-    minWait: 5 * 1000,                          // min wait time of 5 seconds
-    maxWait: 5 * 60 * 1000,                     // max wait time of 5 minutes
-
-    // ideally disable the submit button to inform the user that they can't submit again
-    failCallback: expressBrute.FailTooManyRequests
-});
 
 router.get("/leaderboard", function(req, res){
     users.find({}, function(err, rUsers) {
@@ -77,7 +57,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
             admin:rUser.admin,
             code:rUser.code
         }
-        
+
         res.json({profile:profile});
     });
 });
@@ -137,7 +117,7 @@ router.post("/register", isAdmin, function(req, res) {
 });
 
 // note the use of Express-Brute for brute force prevention
-router.post("/eliminate", bruteforce.prevent, function(req, res) {
+router.post("/eliminate", isLoggedIn, function(req, res) {
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser) {
         //might need to change the sortIndex
