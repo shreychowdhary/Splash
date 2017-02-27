@@ -30,10 +30,6 @@ router.get("/leaderboard", function(req, res){
 
 });
 
-router.get("/profile",isLoggedIn,function(req,res){
-    res.sendFile("/public/profile.html", {'root': './'});
-});
-
 router.get("/profiledata",isLoggedIn,function(req,res){
     var profile = {
         name:req.user.name,
@@ -107,9 +103,13 @@ router.post("/eliminate", isLoggedIn, function(req, res) {
     users.findOne({code:req.body.eliminateCode},function(err,rUser) {
         //might need to change the sortIndex
         console.log(req.user);
+        curdate = new Date();
+        killdate = (curdate.getMonth()+1) + "/"
+                + curdate.getDate() + " " + curdate.getHours() + ":"
+                + curdate.getMinutes();
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){
             users.findOneAndUpdate({email:req.user.email},
-                {$set:{next:rUser.next,},$inc:{kills:1}},{new:true},function(err){
+                {$set:{next:rUser.next,lastKillDate:killdate},$inc:{kills:1}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
@@ -182,9 +182,8 @@ router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'ema
 
 router.get('/oauth2callback',
    passport.authenticate('google', {
-           successRedirect : '/profile',
+           successRedirect : '/',
            failureRedirect : '/',
-           failureFlash: true
 }));
 
 function isLoggedIn(req, res, next) {
@@ -204,7 +203,7 @@ function isAdmin(req, res, next) {
 		return next();
     }
 	// if they aren't redirect them to the home page
-	res.redirect('/profile');
+	res.redirect('/');
 }
 
 module.exports = router;

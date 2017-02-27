@@ -5,7 +5,7 @@ var users = new mongoose.Schema({
     email: String,
     name: String,
     kills: Number,
-    lastKillDate: Date,
+    lastKillDate: String,
     alive: Boolean,
     next: String,
     admin: Boolean,
