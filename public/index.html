@@ -14,10 +14,34 @@
             </div>
         </md-toolbar>
         <div ng-controller="profileCtrl">
-            <profile ng-if="profile.name != null"></profile>
+            <md-card ng-if="profile.name != null">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Profile</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <profile></profile>
+                    <form ng-submit="eliminate()">
+                        <md-input-container>
+                            <label>Code</label>
+                            <input ng-model="$parent.eliminateCode" type="Number">
+                        </md-input-container>
+                        <md-button class="md-raised" type="submit">Submit</md-button>
+                    </form>
+                </md-card-content>
+
+            </md-card>
         </div>
         <div ng-controller="indexCtrl">
-            <leaderboard></leaderboard>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">leaderboard</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <leaderboard></leaderboard>
+            </md-card>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>

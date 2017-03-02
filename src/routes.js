@@ -99,12 +99,13 @@ router.post("/register", isAdmin, function(req, res) {
 
 // note the use of Express-Brute for brute force prevention
 router.post("/eliminate", isLoggedIn, function(req, res) {
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     console.log(req.body.eliminateCode);
     users.findOne({code:req.body.eliminateCode},function(err,rUser) {
         //might need to change the sortIndex
         console.log(req.user);
         curdate = new Date();
-        killdate = (curdate.getMonth()+1) + "/"
+        killdate = (months[curdate.getMonth()]) + " "
                 + curdate.getDate() + " " + curdate.getHours() + ":"
                 + curdate.getMinutes();
         if(rUser != null && req.user.alive && req.user.next == rUser.email ){

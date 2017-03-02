@@ -1,5 +1,6 @@
 angular.module('splash')
 .controller('profileCtrl', function($scope, $mdToast, profileDataService){
+    $scope.eliminateCode;
     $scope.updateProfileData = function(){
         profileDataService.getProfileData(function(response){
             var profile = response.data.profile;
@@ -10,6 +11,7 @@ angular.module('splash')
     $scope.updateProfileData();
 
     $scope.eliminate = function(){
+        console.log($scope);
         profileDataService.eliminate($scope.eliminateCode,$scope.eliminateCallback);
     };
 
