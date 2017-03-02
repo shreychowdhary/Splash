@@ -58,6 +58,12 @@ router.get("/admindata",isAdmin,function(req,res){
     });
 });
 
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
+
+
 router.post("/register", isAdmin, function(req, res) {
     if (req.body.email.length > 4) {
         users.find({ code: { $exists: true } }).sort({ _id: -1 }).limit(1).find(function(err, lUser) {

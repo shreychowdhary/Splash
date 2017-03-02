@@ -6,8 +6,15 @@
 </head>
 <body ng-app="splash">
     <div class="list" ng-controller="adminCtrl">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 align="center" md-truncate flex>Lville Splash</h2>
+                <md-button href="./logout">
+                    Logout
+                </md-button>
+            </div>
+        </md-toolbar>
         <admin></admin>
-
         <form ng-submit="register()">
             <md-input-container>
                 <label>Email @lawrenceville.org</label>
