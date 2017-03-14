@@ -36,7 +36,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         kills:req.user.kills,
         lastKillDate:req.user.lastKillDate,
         alive:req.user.alive,
-        next:req.user.next,
+        target:req.user.target,
         admin: req.user.admin,
         code:req.user.code
     }
@@ -58,7 +58,7 @@ router.get("/admindata",isAdmin,function(req,res){
     });
 });
 
-router.get('/logout', function(req, res){
+router.get('/signout', function(req, res){
     req.logout();
     res.redirect('/');
 });
@@ -114,16 +114,16 @@ router.post("/eliminate", isLoggedIn, function(req, res) {
         killdate = (months[curdate.getMonth()]) + " "
                 + curdate.getDate() + " " + curdate.getHours() + ":"
                 + curdate.getMinutes();
-        if(rUser != null && req.user.alive && req.user.next == rUser.email ){
+        if(rUser != null && req.user.alive && req.user.target == rUser.email ){
             users.findOneAndUpdate({email:req.user.email},
-                {$set:{next:rUser.next,lastKillDate:killdate},$inc:{kills:1}},{new:true},function(err){
+                {$set:{target:rUser.target,lastKillDate:killdate},$inc:{kills:1}},{new:true},function(err){
                     if(err){
                         console.log(err);
                     }
                 });
 
             rUser.alive = false;
-            rUser.next = null;
+            rUser.target = null;
             rUser.save();
             res.status(200).send({
                 message:"Congratulations"
@@ -150,7 +150,7 @@ router.get("/randomize",isAdmin,function(req,res){
             console.log(lastUser.email + " " + randUser.email);
 
             users.findOneAndUpdate({email:lastUser.email},
-                {$set:{next:randUser.email,sortIndex:index}},{new:true},function(err,user){
+                {$set:{target:randUser.email,sortIndex:index}},{new:true},function(err,user){
                     if(err){
                         console.log(err);
                     }
@@ -162,7 +162,7 @@ router.get("/randomize",isAdmin,function(req,res){
         }
         console.log(lastUser.email + " " + firstUser.email);
         users.findOneAndUpdate({email:lastUser.email},
-            {$set:{next:firstUser.email,sortIndex:index}},{new:true},function(err,user){
+            {$set:{target:firstUser.email,sortIndex:index}},{new:true},function(err,user){
                 if(err){
                     console.log(err);
                 }
@@ -181,8 +181,8 @@ router.get("/randomize",isAdmin,function(req,res){
 
 });
 
-router.get("/clearnext",isAdmin,function(req,res){
-    users.update({admin:false},{next:null});
+router.get("/cleartarget",isAdmin,function(req,res){
+    users.update({admin:false},{target:null});
 });
 
 router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'email'] }));

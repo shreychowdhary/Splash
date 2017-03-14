@@ -1,0 +1,14 @@
+.header {
+    background-color: white;
+}
+
+body {
+    background-color: lightblue;
+}
+
+.title{
+    font-family: 'Pacifico', cursive;
+    padding-left: 2.5%;
+    margin:0;
+    font-size: 1.5em;
+}

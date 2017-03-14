@@ -2,49 +2,55 @@
 <html lang="en">
     <head>
         <title>Splash</title>
+        <link rel="stylesheet" href="/style/index.css">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     </head>
     <body ng-app="splash">
         <div ng-controller="profileCtrl">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2 align="center" md-truncate flex>Lville Splash</h2>
-                    <md-button ng-if="profile.name == null" href="./oauth2">
-                        Login
-                    </md-button>
-                    <md-button ng-if="profile.name != null" href="./logout">
-                        Logout
-                    </md-button>
-                </div>
-            </md-toolbar>
-            <md-card ng-if="profile.name != null">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Profile</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <profile></profile>
-                    <form ng-submit="eliminate()">
-                        <md-input-container>
-                            <label>Code</label>
-                            <input ng-model="$parent.eliminateCode" type="Number">
-                        </md-input-container>
-                        <md-button class="md-raised" type="submit">Submit</md-button>
-                    </form>
-                </md-card-content>
-
-            </md-card>
+            <div class="header" layout="row" layout-align="end end">
+                <p class="title" md-truncate flex>Lville Splash</p>
+                <md-button ng-if="profile.admin == true" href="./admin">
+                    Admin
+                </md-button>
+                <md-button ng-if="profile.name == null" href="./oauth2">
+                    Sign In
+                </md-button>
+                <md-button ng-if="profile.name != null" href="./signout">
+                    Sign Out
+                </md-button>
+            </div>
+            <div layout="row" layout-align="center">
+                <md-card flex="60" ng-if="profile.name != null">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Profile</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <profile></profile>
+                        <form ng-submit="eliminate()">
+                            <md-input-container>
+                                <label>Enter Target Code</label>
+                                <input ng-model="$parent.eliminateCode" type="Number">
+                            </md-input-container>
+                            <md-button class="md-raised" type="submit">Submit</md-button>
+                        </form>
+                    </md-card-content>
+                </md-card>
+            </div>
         </div>
         <div ng-controller="indexCtrl">
-            <md-card>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">leaderboard</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <leaderboard></leaderboard>
-            </md-card>
+            <div layout="row" layout-align="center">
+                <md-card flex="60">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">leaderboard</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <leaderboard></leaderboard>
+                </md-card>
+            </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>

@@ -7,7 +7,7 @@ var users = new mongoose.Schema({
     kills: Number,
     lastKillDate: String,
     alive: Boolean,
-    next: String,
+    target: String,
     admin: Boolean,
     sortIndex: Number
 });
