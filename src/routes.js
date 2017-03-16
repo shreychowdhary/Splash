@@ -6,26 +6,19 @@ var passport = require("./passport");
 // setup the brute force prevention system (data is saved in MongoDB collection splash.bruteforce-store)
 
 router.get("/leaderboard", function(req, res){
-    users.find({}, function(err, rUsers) {
+    users.find({kills:{$gt:0}}).sort({kills: -1}).limit(10).find(function(err,rUsers){
         //implement leaderboard filter
         if (err) {
             return res.status(500).json({ message: err.message });
         }
         else {
-            var leaderboard = [];
-            rUsers.forEach(function(user) {
-                if (user.kills != null  && user.kills > 0) {
-                    if (user.name != null) {
-                        leaderboard.push({ name: user.name, kills: user.kills });
-                    }
-                    else {
-                        leaderboard.push({name: user.email, kills: user.kills});
-                    }
-                }
+            leaderboard = [];
+            rUsers.forEach(function(user){
+                leaderboard.push({name:user.name,kills:user.kills});
             });
-            res.json({leaderboard: leaderboard});
+            res.json({leaderboard:leaderboard});
         }
-    })
+    });
 
 });
 
