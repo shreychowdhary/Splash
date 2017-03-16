@@ -2,6 +2,9 @@ header {
     background-color: white;
 }
 
+main{
+    overflow-y:auto;
+}
 
 .title{
     font-family: 'Pacifico', cursive;
@@ -9,6 +12,7 @@ header {
     margin:0;
     font-size: 1.5em;
 }
+
 
 body {
     height:auto !important;

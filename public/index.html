@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     </head>
     <body ng-app="splash">
-        <div ng-controller="indexCtrl">
+        <div ng-controller="indexCtrl" layout="column" layout-fill>
             <header layout="row" layout-align="end end">
                 <p class="title" md-truncate flex>Lville Splash</p>
                 <md-button ng-if="profile.admin == true" href="./admin">
@@ -21,7 +21,7 @@
                     Sign Out
                 </md-button>
             </header>
-            <main layout="column">
+            <main>
                 <div layout layout-align="center">
                     <md-card flex="60" flex-xs="100" ng-if="profile.name != null">
                         <md-card-title>
@@ -63,13 +63,14 @@
                         <md-divider></md-divider>
                         <md-card-content>
                             <p>
-
+                                Rules you have to get them out 10 feet away from building.
                             </p>
                         </md-card-content>
                     </md-card>
                 </div>
             </main>
         </div>
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
