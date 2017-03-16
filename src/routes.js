@@ -23,7 +23,6 @@ router.get("/leaderboard", function(req, res){
                     }
                 }
             });
-            //change this to something more secure in the future
             res.json({leaderboard: leaderboard});
         }
     })
@@ -46,9 +45,9 @@ router.get("/profiledata",isLoggedIn,function(req,res){
 router.get("/admin",isAdmin,function(req,res){
     res.sendFile("/public/admin.html", {'root': './'});
 });
-
+//put this into a function at somepoint
 router.get("/admindata",isAdmin,function(req,res){
-    users.find({ alive:true }).sort({ sortIndex:1 }).find(function(err,rUsers) {
+    users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers) {
         if (err) {
             return res.status(500).json({message: err.message});
         }
@@ -102,8 +101,57 @@ router.post("/register", isAdmin, function(req, res) {
         });
     }
 });
+//
 
-// note the use of Express-Brute for brute force prevention
+router.post("/insertuser",isAdmin,function(req,res){
+    console.log("insert");
+    users.findOneAndUpdate({email:req.body.email+"@lawrenceville.org"},{$set:{alive:true,target:req.body.prevUser.target,sortIndex:req.body.prevUser.sortIndex}},function(err,doc){
+        if(err){
+            return res.status(500).send({message: err.message});
+        }
+        else if(doc == null){
+            res.status(400).send({message:req.body.email+"@lawrenceville.org not found"});
+        }
+        else{
+            users.findOneAndUpdate({email:req.body.prevUser.email},{$set:{target:req.body.email+"@lawrenceville.org"},$inc:{sortIndex:1,kills:-1}},function(err){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    users.update({sortIndex:{$gt:req.body.prevUser.sortIndex+1}},{$inc:{sortIndex:1}},{multi: true},function(err){
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            res.status(200).send({message:"Inserted " + req.body.email});
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+router.post("/deleteuser",isAdmin,function(req,res){
+    users.findOneAndUpdate({target:req.body.user.email},{$set:{target:req.body.user.target},$inc:{kills:1}},function(err){
+        if(err){
+            console.log(err);
+        }
+        else{
+            users.findOneAndUpdate({email:req.body.user.email},{$set:{alive:false,target:null}},function(err){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    res.status(200).send({message:"Deleted " + req.body.user.email});
+                }
+            });
+        }
+    })
+});
+
+
+// add brute force
 router.post("/eliminate", isLoggedIn, function(req, res) {
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     console.log(req.body.eliminateCode);
@@ -147,7 +195,6 @@ router.get("/randomize",isAdmin,function(req,res){
 
         while(notAssignedList.length > 0){
             randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
-            console.log(lastUser.email + " " + randUser.email);
 
             users.findOneAndUpdate({email:lastUser.email},
                 {$set:{target:randUser.email,sortIndex:index}},{new:true},function(err,user){
@@ -156,11 +203,9 @@ router.get("/randomize",isAdmin,function(req,res){
                     }
                 });
 
-            console.log(notAssignedList.length);
             lastUser = randUser;
             index++;
         }
-        console.log(lastUser.email + " " + firstUser.email);
         users.findOneAndUpdate({email:lastUser.email},
             {$set:{target:firstUser.email,sortIndex:index}},{new:true},function(err,user){
                 if(err){
@@ -172,7 +217,7 @@ router.get("/randomize",isAdmin,function(req,res){
                             return res.status(500).json({message: err.message});
                         }
                         else{
-                            res.send({adminData:rUsers});
+                            return res.json({adminData:rUsers});
                         }
                     });
                 }
@@ -182,7 +227,23 @@ router.get("/randomize",isAdmin,function(req,res){
 });
 
 router.get("/cleartarget",isAdmin,function(req,res){
-    users.update({admin:false},{target:null});
+    console.log("clear");
+    users.update({alive:true},{target:null,sortIndex:null},{multi: true},function(err){
+        if(err){
+            return res.status(500).json({message: err.message});
+        }
+        else{
+            users.find({alive:true}).sort({sortIndex:1}).find(function(err,rUsers){
+                if(err){
+                    return res.status(500).json({message: err.message});
+                }
+                else{
+                    return res.json({adminData:rUsers});
+                }
+            });
+        }
+    });
+
 });
 
 router.get('/oauth2', passport.authenticate('google', { scope : ['profile', 'email'] }));

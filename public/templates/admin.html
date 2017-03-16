@@ -5,6 +5,8 @@
     <th>Kills</th>
     <th>Last Kill</th>
     <th>Target</th>
+    <th>Insert</th>
+    <th>Delete</th>
 
     <tr ng-repeat="user in adminData">
         <td>{{user.name}}</td>
@@ -13,5 +15,7 @@
         <td>{{user.kills}}</td>
         <td>{{user.lastKillDate}}</td>
         <td>{{user.target}}</td>
+        <td><md-button ng-click="insert(user)">Insert</md-button></td>
+        <td><md-button ng-click="delete(user)">Delete</md-button></td>
     </tr>
 </table>

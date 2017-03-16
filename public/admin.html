@@ -3,13 +3,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <head>
         <title>Splash</title>
-        <link rel="stylesheet" href="/style/index.css">
+        <link rel="stylesheet" href="/style/admin.css">
         <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     </head>
     <body ng-app="splash">
-        <div ng-controller="adminCtrl">
-            <div class="header" layout="row" layout-align="end center">
+        <div ng-controller="adminCtrl" layout="column" layout-fill>
+            <header layout="row" layout-align="end center">
                 <p class="title" md-truncate flex>Lville Splash</p>
                 <md-button href="./">
                     Home
@@ -17,19 +17,32 @@
                 <md-button href="./signout">
                     Sign Out
                 </md-button>
-            </div>
-            <form ng-submit="register()">
-                <md-input-container>
-                    <label>Email @lawrenceville.org</label>
-                    <input ng-model="email" type="text">
-                </md-input-container>
-                <md-button class="md-raised" type="submit">Register</md-button>
-            </form>
-            <md-button class="md-raised" ng-click="randomize()">Randomize</md-button>
-            <admin></admin>
-
-
-            <!-- navigation buttons from admin page -->
+            </header>
+            <main flex>
+                <div layout="row" layout-align="center">
+                    <md-card flex="80" flex-xs="100">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Admin Tools</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <form ng-submit="register()">
+                                <md-input-container>
+                                    <label>Email @lawrenceville.org</label>
+                                    <input ng-model="email" type="text">
+                                </md-input-container>
+                                <md-button class="md-raised" type="submit">Register</md-button>
+                            </form>
+                            <md-button class="md-raised" ng-click="randomize()">Randomize</md-button>
+                            <md-button class="md-raised" ng-click="clear()">Clear Targets</md-button>
+                            <p>Alive: {{adminData.length}}</p>
+                            <admin></admin>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </main>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>

@@ -1,9 +1,5 @@
-.header {
+header {
     background-color: white;
-}
-
-body {
-    background-color: lightblue;
 }
 
 .title{
@@ -11,4 +7,9 @@ body {
     padding-left: 2.5%;
     margin:0;
     font-size: 1.5em;
+}
+
+body {
+    height:auto !important;
+    background-color: lightblue;
 }

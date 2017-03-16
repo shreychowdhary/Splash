@@ -8,8 +8,8 @@
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     </head>
     <body ng-app="splash">
-        <div ng-controller="profileCtrl">
-            <div class="header" layout="row" layout-align="end end">
+        <div ng-controller="indexCtrl">
+            <header layout="row" layout-align="end end">
                 <p class="title" md-truncate flex>Lville Splash</p>
                 <md-button ng-if="profile.admin == true" href="./admin">
                     Admin
@@ -20,40 +20,56 @@
                 <md-button ng-if="profile.name != null" href="./signout">
                     Sign Out
                 </md-button>
-            </div>
-            <div layout="row" layout-align="center">
-                <md-card flex="60" flex-xs="100" ng-if="profile.name != null">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">Profile</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-content>
-                        <profile></profile>
-                        <form ng-submit="eliminate()">
-                            <md-input-container>
-                                <label>Enter Target Code</label>
-                                <input ng-model="$parent.eliminateCode" type="Number">
-                            </md-input-container>
-                            <md-button class="md-raised" type="submit">Submit</md-button>
-                        </form>
-                    </md-card-content>
-                </md-card>
-            </div>
-        </div>
-        <div ng-controller="indexCtrl">
-            <div layout="row" layout-align="center">
-                <md-card flex="60" flex-xs="100">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">leaderboard</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <leaderboard></leaderboard>
-                </md-card>
-            </div>
-        </div>
+            </header>
+            <main layout="column">
+                <div layout layout-align="center">
+                    <md-card flex="60" flex-xs="100" ng-if="profile.name != null">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Profile</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <profile></profile>
+                            <form ng-submit="eliminate()">
+                                <md-input-container>
+                                    <label>Enter Target Code</label>
+                                    <input ng-model="$parent.eliminateCode" type="Number">
+                                </md-input-container>
+                                <md-button class="md-raised" type="submit">Submit</md-button>
+                            </form>
+                        </md-card-content>
+                    </md-card>
+                </div>
+                <div layout layout-align="center">
+                    <md-card flex="60" flex-xs="100">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Leaderboard</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-divider></md-divider>
+                        <leaderboard></leaderboard>
+                    </md-card>
+                </div>
+                <div layout layout-align="center">
+                    <md-card flex="60" flex-xs="100">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Rules</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-divider></md-divider>
+                        <md-card-content>
+                            <p>
 
+                            </p>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </main>
+        </div>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
@@ -63,8 +79,6 @@
         <script src="/scripts/controllers/indexCtrl.js"></script>
         <script src="/scripts/services/indexData.js"></script>
         <script src="/scripts/directives/leaderboard.js"></script>
-        <script src="/scripts/controllers/profileCtrl.js"></script>
-        <script src="/scripts/services/profileData.js"></script>
         <script src="/scripts/directives/profile.js"></script>
     </body>
 </html>
