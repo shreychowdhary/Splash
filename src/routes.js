@@ -39,7 +39,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
                 code:req.user.code
             }
             if(rUsers.name != null){
-                profile.target = req.user.target + " " + rUsers.name;
+                profile.target = rUsers.name;
             }
             res.json({profile:profile});
         }
