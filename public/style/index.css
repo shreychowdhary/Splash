@@ -15,18 +15,5 @@ main{
 
 
 body {
-    height:auto !important;
     background-color: lightblue;
-}
-
-footer {
-    background-color: white;
-    text-align: center;
-    width:100%;
-    padding-top:1em;
-    padding-bottom:1em;
-}
-
-footer a{
-    color:black;
 }
