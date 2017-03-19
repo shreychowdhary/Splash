@@ -13,7 +13,16 @@ main{
     font-size: 1.5em;
 }
 
-
 body {
     background-color: lightblue;
+}
+
+footer {
+    background-color: white;
+    text-align: center;
+    width:100%;
+}
+
+footer a{
+    color:black;
 }

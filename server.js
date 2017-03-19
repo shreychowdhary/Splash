@@ -20,7 +20,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(router);
-
+app.use(function(req, res) {
+    res.status(200).send('404: Page not Found', 404);
+});
 
 
 app.listen(port,ip,function() {

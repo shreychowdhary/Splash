@@ -12,17 +12,13 @@ module.exports = function(request, response, next) {
 
     Throttle.findOneAndUpdate({ip: ip},
         { $inc: { hits: 1 } },
-        { upsert: false },function(error, throttle) {
+        { upsert: false }, function(error, throttle) {
             if (error) {
                 response.statusCode = 500;
                 return next(error);
             }
             else if (!throttle) {
-                throttle = new Throttle({
-                    createdAt: new Date(),
-                    ip: ip
-                });
-                throttle.save(function(error, throttle) {
+                Throttle.create({createdAt:new Date(), ip:ip},function(error, throttle) {
                     if (error) {
                         response.statusCode = 500;
                         return next(error);
