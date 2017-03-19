@@ -24,7 +24,7 @@ router.get("/leaderboard", function(req, res){
 });
 
 router.get("/profiledata",isLoggedIn,function(req,res){
-    users.find({email:req.user.target},function(err,rUsers){
+    users.findOne({email:req.user.target},function(err,rUsers){
         if(err){
 
         }
@@ -38,7 +38,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
                 admin: req.user.admin,
                 code:req.user.code
             }
-            if(rUsers.name != null){
+            if(rUsers != null && rUsers.name != null){
                 profile.target = rUsers.name;
             }
             res.json({profile:profile});
