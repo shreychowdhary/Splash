@@ -1,3 +1,8 @@
 'use strict';
 
-angular.module('splash', ['ngMaterial']);
+angular.module('splash', ['ngMaterial'])
+.filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
+});

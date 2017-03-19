@@ -24,16 +24,26 @@ router.get("/leaderboard", function(req, res){
 });
 
 router.get("/profiledata",isLoggedIn,function(req,res){
-    var profile = {
-        name:req.user.name,
-        kills:req.user.kills,
-        lastKillDate:req.user.lastKillDate,
-        alive:req.user.alive,
-        target:req.user.target,
-        admin: req.user.admin,
-        code:req.user.code
-    }
-    res.json({profile:profile});
+    users.find({email:req.user.target},function(err,rUsers){
+        if(err){
+
+        }
+        else{
+            var profile = {
+                name:req.user.name,
+                kills:req.user.kills,
+                "last Kill":req.user.lastKillDate,
+                alive:req.user.alive,
+                target:req.user.target,
+                admin: req.user.admin,
+                code:req.user.code
+            }
+            if(rUsers.name != null){
+                profile.target = req.user.target + " " + rUsers.name;
+            }
+            res.json({profile:profile});
+        }
+    });
 });
 
 router.get("/admin",isAdmin,function(req,res){
