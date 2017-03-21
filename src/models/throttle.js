@@ -9,7 +9,7 @@ var throttle = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now,
-        expires: 60 // (60 * 2), 2 minutes
+        expires: 60 * 3 // (60 * 2), 2 minutes
     },
     ip: {
         type: String,
@@ -26,5 +26,5 @@ var throttle = new mongoose.Schema({
     }
 });
 
-throttle.index({ createdAt: 1  }, { expireAfterSeconds: 60 });
+throttle.index({ createdAt: 1  }, { expireAfterSeconds: 60 * 3 });
 module.exports = mongoose.model('throttle', throttle);
