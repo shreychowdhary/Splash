@@ -163,9 +163,7 @@ router.post("/eliminate", isLoggedIn, throttler, function(req, res) {
         //might need to change the sortIndex
         console.log(req.user);
         curdate = new Date();
-        killdate = (months[curdate.getMonth()]) + " "
-                + curdate.getDate() + " " + curdate.getHours() + ":"
-                + curdate.getMinutes();
+        killdate = months[curdate.getMonth()] + " " + curdate.getDate();
         if(rUser != null && req.user.alive && req.user.target == rUser.email ){
             users.findOneAndUpdate({email:req.user.email},
                 {$set:{target:rUser.target,lastKillDate:killdate},$inc:{kills:1}},{new:true},function(err){
