@@ -10,6 +10,7 @@ angular.module('splash')
             adminData = response.adminData;
         }
         $scope.adminData = adminData;
+        console.log(adminData);
     }
 
     adminDataService.getAdminData($scope.updateAdminData);

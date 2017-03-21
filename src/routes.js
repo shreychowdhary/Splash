@@ -109,7 +109,7 @@ router.post("/register", isAdmin, function(req, res) {
 
 router.post("/insertuser",isAdmin,function(req,res){
     console.log("insert");
-    users.findOneAndUpdate({email:req.body.email+"@lawrenceville.org"},{$set:{alive:true,target:req.body.prevUser.target,sortIndex:req.body.prevUser.sortIndex}},function(err,doc){
+    users.findOneAndUpdate({email:req.body.email+"@lawrenceville.org"},{$set:{alive:true,target:req.body.prevUser.target,sortIndex:req.body.prevUser.sortIndex-1}},function(err,doc){
         if(err){
             return res.status(500).send({message: err.message});
         }
@@ -117,19 +117,20 @@ router.post("/insertuser",isAdmin,function(req,res){
             res.status(400).send({message:req.body.email+"@lawrenceville.org not found"});
         }
         else{
-            users.findOneAndUpdate({email:req.body.prevUser.email},{$set:{target:req.body.email+"@lawrenceville.org"},$inc:{sortIndex:1,kills:-1}},function(err){
+            users.findOneAndUpdate({email:req.body.prevUser.email},{$set:{target:req.body.email+"@lawrenceville.org"},$inc:{kills:-1}},function(err){
                 if(err){
                     console.log(err);
                 }
                 else{
-                    users.update({sortIndex:{$gt:req.body.prevUser.sortIndex+1}},{$inc:{sortIndex:1}},{multi: true},function(err){
+                    res.status(200).send({message:"Inserted " + req.body.email});
+                    /*users.update({sortIndex:{$gt:req.body.prevUser.sortIndex+1}},{$inc:{sortIndex:1}},{multi: true},function(err){
                         if(err){
                             console.log(err);
                         }
                         else{
-                            res.status(200).send({message:"Inserted " + req.body.email});
+
                         }
-                    });
+                    });*/
                 }
             });
         }
@@ -164,7 +165,7 @@ router.post("/eliminate", isLoggedIn, throttler, function(req, res) {
         console.log(req.user);
         curdate = new Date();
         killdate = months[curdate.getMonth()] + " " + curdate.getDate();
-        if(rUser != null && req.user.alive && req.user.target == rUser.email ){
+        if(rUser != null && req.user.alive && req.user.target == rUser.email){
             users.findOneAndUpdate({email:req.user.email},
                 {$set:{target:rUser.target,lastKillDate:killdate},$inc:{kills:1}},{new:true},function(err){
                     if(err){
@@ -193,13 +194,13 @@ router.get("/randomize",isAdmin,function(req,res){
         notAssignedList = aUsers.map(function (item) { return item; });
         firstUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
         lastUser = firstUser;
-        index = 0;
+        index = 1;
 
         while(notAssignedList.length > 0){
             randUser = notAssignedList.splice(Math.floor(Math.random()*notAssignedList.length),1)[0];
 
-            users.findOneAndUpdate({email:lastUser.email},
-                {$set:{target:randUser.email,sortIndex:index}},{new:true},function(err,user){
+            users.findOneAndUpdate({email:randUser.email},
+                {$set:{target:lastUser.email,sortIndex:index}},{new:true},function(err,user){
                     if(err){
                         console.log(err);
                     }
@@ -208,8 +209,8 @@ router.get("/randomize",isAdmin,function(req,res){
             lastUser = randUser;
             index++;
         }
-        users.findOneAndUpdate({email:lastUser.email},
-            {$set:{target:firstUser.email,sortIndex:index}},{new:true},function(err,user){
+        users.findOneAndUpdate({email:firstUser.email},
+            {$set:{target:lastUser.email,sortIndex:0}},{new:true},function(err,user){
                 if(err){
                     console.log(err);
                 }
