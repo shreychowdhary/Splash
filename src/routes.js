@@ -3,6 +3,7 @@ var router = express.Router();
 var users = require("./models/users");
 var passport = require("./passport");
 var throttler = require('./throttle');
+var sanitize = require("mongo-sanitize");
 
 // setup the brute force prevention system (data is saved in MongoDB collection splash.bruteforce-store)
 
@@ -160,7 +161,7 @@ router.post("/deleteuser",isAdmin,function(req,res){
 router.post("/eliminate", isLoggedIn, throttler, function(req, res) {
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     console.log(req.body.eliminateCode);
-    users.findOne({code:req.body.eliminateCode},function(err,rUser) {
+    users.findOne({code:sanitize(req.body.eliminateCode)},function(err,rUser) {
         //might need to change the sortIndex
         console.log(req.user);
         curdate = new Date();
