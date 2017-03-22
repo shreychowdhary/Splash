@@ -36,11 +36,13 @@ router.get("/profiledata",isLoggedIn,function(req,res){
                 "last Kill":req.user.lastKillDate,
                 alive:req.user.alive,
                 target:req.user.target,
-                admin: req.user.admin,
                 code:req.user.code
             }
             if(rUsers != null && rUsers.name != null){
                 profile.target = rUsers.name;
+            }
+            if(req.user.admin == true){
+                profile.admin = req.user.admin;
             }
             res.json({profile:profile});
         }
