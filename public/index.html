@@ -26,19 +26,31 @@
                     <md-card flex="60" flex-xs="100" ng-if="profile.name != null">
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline">Profile</span>
+                                <md-grid-list md-cols="2" md-row-height="2:1" md-gutter="47%">
+                                <md-grid-tile> <span class="md-headline" id="profile-name">{{ profile.name }}</span> </md-grid-tile>
+                                <md-grid-tile> <span class="md-headline" id="profile-code">Code: {{ profile.code }}</span> </md-grid-tile>
                             </md-card-title-text>
                         </md-card-title>
                         <md-divider></md-divider>
                         <md-card-content>
-                            <profile></profile>
-                            <form ng-submit="eliminate()">
-                                <md-input-container>
-                                    <label>Enter Target Code</label>
-                                    <input ng-model="$parent.eliminateCode" type="Number">
-                                </md-input-container>
-                                <md-button class="md-raised" type="submit">Submit</md-button>
-                            </form>
+                            <md-grid-list md-cols="2" md-row-height="10:1">
+                                <md-grid-tile id="target-heading"> <h2>Next Target:</h2> </md-grid-tile>
+                                <md-grid-tile> <h2>Number of Kills:</h2> </md-grid-tile>
+
+                                <md-grid-tile id="target-name"> {{ profile.target }} </md-grid-tile>
+                                <md-grid-tile> {{ profile.kills }} </md-grid-tile>
+
+                                <md-grid-tile md-colspan="2" md-rowspan="2"> <h2> Splash Your Target: </h2> </md-grid-tile>
+                                <md-grid-tile md-colspan="2">
+                                    <form ng-submit="eliminate()">
+                                        <md-input-container>
+                                            <label>Enter Target Code</label>
+                                            <input ng-model="$parent.eliminateCode" type="Number">
+                                        </md-input-container>
+                                        <md-button class="md-raised" type="submit">Submit</md-button>
+                                    </form>
+                                </md-grid-tile>
+                            </md-grid-list>
                         </md-card-content>
                     </md-card>
                 </div>
