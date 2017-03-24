@@ -1,6 +1,11 @@
 <md-card-content>
     <div class="line" ng-repeat="player in leaderboard">
-        <p ng-if="player.name!=null">#{{$index+1}} {{player.name}}: {{player.kills}} kill(s)</p>
-        <md-divider ng-if="!$last"></md-divider>
+        <md-grid-list class="lead" ng-if="player.name!=null" md-cols="9" md-gutter="0px" md-row-height="3:1">
+            <md-grid-tile class="lead-place"> #{{ $index+1 }} </md-grid-tile>
+            <md-grid-tile md-colspan="4" class="lead-name"> {{ player.name }} </md-grid-tile>
+            <md-grid-tile md-colspan="4" class="lead-kills"> {{ player.kills }} kill(s) </md-grid-tile>
+        </md-grid-list>
+        <br>
+        <!--<md-divider ng-if="!$last"></md-divider>-->
     </div>
 </md-card-content>

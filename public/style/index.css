@@ -37,6 +37,32 @@ md-grid-tile h2 {
     background-color: #f7f9fc;
 }
 
+.lead {
+     border: 1px solid black;
+     border-radius: 15px;
+     width: 70%;
+}
+
+.lead-place {
+    border: 1px solid white;
+    border-right-color: black;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: #f7f9fc;
+    font-weight: bold;
+    height: 100%;
+}
+
+.lead-name {
+    border: 1px solid white;
+    border-right-color: black;
+    height: 100%;
+}
+
+.lead-kills {
+    height: 100%;
+}
+
 footer {
     background-color: white;
     text-align: center;
