@@ -17,6 +17,26 @@ body {
     background-color: lightblue;
 }
 
+#profile-name {
+    font-size: 3em;
+}
+
+md-grid-tile h2 {
+    font-family: 'Pacifico', cursive;
+}
+
+#target-heading {
+    border: 1px solid black;
+    border-bottom: 1px solid #f7f9fc;
+    background-color: #f7f9fc;
+}
+
+#target-name {
+    border: 1px solid black;
+    border-top: 1px solid #f7f9fc;
+    background-color: #f7f9fc;
+}
+
 footer {
     background-color: white;
     text-align: center;
