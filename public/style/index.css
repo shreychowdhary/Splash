@@ -18,11 +18,10 @@ body {
 }
 
 #profile-name {
-    font-size: 3em;
+    font-size: 2em;
 }
 
 md-grid-tile h2 {
-    font-family: 'Pacifico', cursive;
 }
 
 #target-heading {
