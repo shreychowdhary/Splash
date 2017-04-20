@@ -131,7 +131,6 @@ router.post("/insertuser",isAdmin,function(req,res){
                             console.log(err);
                         }
                         else{
-
                         }
                     });*/
                 }

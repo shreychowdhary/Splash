@@ -34,4 +34,18 @@ angular.module('splash')
             $scope.updateProfileData();
         }
     }
+
+    $scope.showCode = function(event) {
+        $mdDialog.show(
+            $mdDialog.alert()
+            .parent(angular.element(document.querySelector('#popupContainer')))
+            .clickOutsideToClose(true)
+            .title("Your splash code is " + $scope.profile.code)
+            .textContent("This is the code you will give if you are splashed. Do not show this to anyone.")
+            .ariaLabel('Show Code')
+            .ok("Close")
+            .targetEvent(event)
+        );
+    };
+
 });
