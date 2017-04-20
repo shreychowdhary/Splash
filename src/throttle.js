@@ -48,7 +48,7 @@ module.exports = function(request, response, next) {
         if (throttle.hits < 3) {
             return next();
         } else {
-            return response.status(429).json({message: 'Too many tries, try again in a 3 minutes'});
+            return response.status(429).json({message: 'Too many tries, try again in 3 minutes'});
         }
     }
 };
