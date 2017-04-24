@@ -25,28 +25,33 @@ router.get("/leaderboard", function(req, res){
 });
 
 router.get("/profiledata",isLoggedIn,function(req,res){
+
+    var profile = {
+        name:req.user.name,
+        kills:req.user.kills,
+        "last Kill":req.user.lastKillDate,
+        Alive:req.user.alive,
+        target:req.user.target,
+        code:req.user.code
+    }
+
+    if(req.user.admin == true){
+        profile.admin = req.user.admin;
+    }
+
     users.findOne({email:req.user.target},function(err,rUsers){
         if(err){
-
+            res.json({profile:profile});
         }
         else{
-            var profile = {
-                name:req.user.name,
-                kills:req.user.kills,
-                "last Kill":req.user.lastKillDate,
-                alive:req.user.alive,
-                target:req.user.target,
-                code:req.user.code
-            }
             if(rUsers != null && rUsers.name != null){
                 profile.target = rUsers.name;
             }
-            if(req.user.admin == true){
-                profile.admin = req.user.admin;
-            }
+
             res.json({profile:profile});
         }
     });
+
 });
 
 router.get("/admin",isAdmin,function(req,res){
