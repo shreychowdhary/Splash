@@ -37,7 +37,7 @@ module.exports = function(request, response, next) {
         });
 
     function respondWithThrottle(request, response, next, throttle) {
-        var timeUntilReset = (3 * 60 * 1000) -
+        var timeUntilReset = (5 * 60 * 1000) -
                     (new Date().getTime() - throttle.createdAt.getTime()),
             remaining =  Math.max(0, (3 - throttle.hits));
 
@@ -48,7 +48,7 @@ module.exports = function(request, response, next) {
         if (throttle.hits < 3) {
             return next();
         } else {
-            return response.status(429).json({message: 'Too many tries, try again in 3 minutes'});
+            return response.status(429).json({message: 'Too many tries, try again in 5 minutes'});
         }
     }
 };
