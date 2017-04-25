@@ -45,7 +45,7 @@ router.get("/profiledata",isLoggedIn,function(req,res){
         }
         else{
             if(rUsers != null && rUsers.name != null){
-                profile.target = rUsers.name;
+                profile.target = rUsers.name +" (" +req.user.target + ")";
             }
 
             res.json({profile:profile});
