@@ -79,7 +79,6 @@ router.post("/register", isAdmin, function(req, res) {
     if (req.body.email.length > 4) {
         users.find({ code: { $exists: true } }).sort({ _id: -1 }).limit(1).find(function(err, lUser) {
             if (lUser.length > 0 && lUser[0].code) {
-                // this might need to get changed later to accomodate more users?
                 code = lUser[0].code + Math.floor(Math.random() * 100) + 3;
             }
             else {

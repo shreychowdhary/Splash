@@ -34,9 +34,11 @@ passport.use(new GoogleStrategy({
                 console.log("returning");
                 // if a user is found, log them in
                 return done(null, user);
-            } else if(user && !user.name){
+            }
+            else if(user && !user.name){
                 //convert this to just adding the name
                 console.log("paid");
+
                 user.update({
                     id:profile.id,
                     name:profile.displayName
@@ -46,7 +48,8 @@ passport.use(new GoogleStrategy({
                         return done(null,user);
                     });
                 });
-            } else{
+            }
+            else{
                 console.log("Not Registered");
                 done(null, false, { message: 'Not Registered.'});
             }

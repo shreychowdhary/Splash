@@ -22,6 +22,7 @@ angular.module('splash')
     $scope.eliminate = function(){
         console.log($scope);
         indexDataService.eliminate($scope.eliminateCode,$scope.eliminateCallback);
+        $scope.eliminateCode = "";
     };
 
     $scope.eliminateCallback = function(response){
