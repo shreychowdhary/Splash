@@ -114,6 +114,12 @@ router.post("/register", isAdmin, function(req, res) {
 });
 //
 
+router.get("/alivecount",function(req,res){
+    users.count({alive:true},function(err,c){
+        res.status(200).send({aliveCount:c});
+    });
+});
+
 router.post("/insertuser",isAdmin,function(req,res){
     console.log("insert");
     users.findOneAndUpdate({email:req.body.email+"@lawrenceville.org"},{$set:{alive:true,target:req.body.prevUser.target,sortIndex:req.body.prevUser.sortIndex-1}},function(err,doc){
