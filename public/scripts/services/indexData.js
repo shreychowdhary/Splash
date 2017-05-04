@@ -10,7 +10,4 @@ angular.module('splash')
       console.log(eliminateCode);
       $http.post("/eliminate",{"eliminateCode":eliminateCode}).then(cb,cb);
   }
-  this.getAliveCount = function(cb) {
-      $http.get("/alivecount").then(cb);
-  }
 });

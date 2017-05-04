@@ -114,7 +114,7 @@ router.post("/register", isAdmin, function(req, res) {
 });
 //
 
-router.get("/alivecount",function(req,res){
+router.get("/alivecount",isAdmin,function(req,res){
     users.count({alive:true},function(err,c){
         res.status(200).send({aliveCount:c});
     });

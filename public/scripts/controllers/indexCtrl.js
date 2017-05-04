@@ -9,12 +9,6 @@ angular.module('splash')
         $scope.leaderboard =  leaderboard;
     });
 
-    indexDataService.getAliveCount(function(response){
-        var aliveCount = response.data.aliveCount;
-        console.log(aliveCount);
-        $scope.aliveCount = aliveCount;
-    })
-
     $scope.eliminateCode;
     $scope.updateProfileData = function(){
         indexDataService.getProfileData(function(response){
