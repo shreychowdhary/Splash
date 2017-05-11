@@ -150,7 +150,7 @@ router.post("/insertuser",isAdmin,function(req,res){
 });
 
 router.post("/deleteuser",isAdmin,function(req,res){
-    users.findOneAndUpdate({target:req.body.user.email},{$set:{target:req.body.user.target},$inc:{kills:1}},function(err){
+    users.findOneAndUpdate({target:req.body.user.email},{$set:{target:req.body.user.target}},function(err){
         if(err){
             console.log(err);
         }
