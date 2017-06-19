@@ -36,7 +36,7 @@ passport.use(new GoogleStrategy({
                 return done(null, user);
             }
             else if(user && !user.name){
-                //convert this to just adding the name
+                //if the user is registered and this is the first time signing in
                 console.log("paid");
 
                 user.update({
